@@ -1687,7 +1687,7 @@ if get_option('libmpv')
 
     headers = ['libmpv/client.h', 'libmpv/render.h',
                'libmpv/render_gl.h', 'libmpv/stream_cb.h',
-               "libmpv/render_swapchain.h"]
+               'libmpv/render_swapchain.h']
     install_headers(headers, subdir: 'mpv')
 endif
 

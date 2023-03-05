@@ -8,12 +8,15 @@ extern "C" {
 #endif
 
 typedef struct render_swapchain_init_params {
+    int h;
+    int w;
     void* swapchain_out;
 } render_swapchain_init_params;
 
 typedef struct render_swapchain_update_params {
-    int h;
-    int w;
+    int *h;
+    int *w;
+    void** swapchain_out;
 } render_swapchain_update_params;
 
 #ifdef __cplusplus
