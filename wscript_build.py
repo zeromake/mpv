@@ -457,6 +457,8 @@ def build(ctx):
         ( "video/out/d3d11/hwdec_d3d11va.c",     "d3d11 && d3d-hwaccel" ),
         ( "video/out/d3d11/hwdec_dxva2dxgi.c",   "d3d11 && d3d9-hwaccel" ),
         ( "video/out/d3d11/ra_d3d11.c",          "d3d11" ),
+        ( "video/out/d3d11/libmpv_swapchain.c",  "d3d11" ),
+        ( "video/out/d3d11/libmpv_helper.c",     "d3d11" ),
         ( "video/out/dither.c" ),
         ( "video/out/dr_helper.c" ),
         ( "video/out/drm_atomic.c",              "drm" ),
@@ -752,7 +754,7 @@ def build(ctx):
         )
 
         headers = ["client.h", "render.h",
-                   "render_gl.h", "stream_cb.h"]
+                   "render_gl.h", "stream_cb.h", "render_swapchain.h"]
         for f in headers:
             ctx.install_as(ctx.env.INCLUDEDIR + '/mpv/' + f, 'libmpv/' + f)
 

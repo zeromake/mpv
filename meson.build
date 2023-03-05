@@ -968,7 +968,9 @@ d3d11 = get_option('d3d11').require(
 features += {'d3d11': d3d11.allowed()}
 if features['d3d11']
     sources += files('video/out/d3d11/context.c',
-                     'video/out/d3d11/ra_d3d11.c')
+                     'video/out/d3d11/ra_d3d11.c',
+                     'video/out/d3d11/libmpv_swapchain.c'
+                     'video/out/d3d11/libmpv_helper.c')
 endif
 
 wayland = {
@@ -1684,7 +1686,8 @@ if get_option('libmpv')
                  description: 'mpv media player client library')
 
     headers = ['libmpv/client.h', 'libmpv/render.h',
-               'libmpv/render_gl.h', 'libmpv/stream_cb.h']
+               'libmpv/render_gl.h', 'libmpv/stream_cb.h',
+               "libmpv/render_swapchain.h"]
     install_headers(headers, subdir: 'mpv')
 endif
 

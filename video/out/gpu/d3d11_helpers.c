@@ -639,20 +639,28 @@ static HRESULT create_swapchain_1_2(ID3D11Device *dev, IDXGIFactory2 *factory,
                             "swapchain backbuffers in Windows 7\n");
             desc.BufferUsage &= ~DXGI_USAGE_UNORDERED_ACCESS;
         }
-
+#ifdef __WINRT__
+        // winrt only DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL
+        desc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL;
+#else
         if (IsWindows10OrGreater()) {
             desc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
         } else {
             desc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL;
         }
+#endif
         desc.BufferCount = opts->length;
     } else {
         desc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
         desc.BufferCount = 1;
     }
-
-    hr = IDXGIFactory2_CreateSwapChainForHwnd(factory, (IUnknown*)dev,
-        opts->window, &desc, NULL, NULL, &swapchain1);
+    if (opts->window) {
+        hr = IDXGIFactory2_CreateSwapChainForHwnd(factory, (IUnknown*)dev,
+            opts->window, &desc, NULL, NULL, &swapchain1);
+    } else {
+        hr = IDXGIFactory2_CreateSwapChainForComposition(factory,
+            (IUnknown *)dev, &desc, NULL, &swapchain1);
+    }
     if (FAILED(hr))
         goto done;
     hr = IDXGISwapChain1_QueryInterface(swapchain1, &IID_IDXGISwapChain,
