@@ -969,7 +969,7 @@ features += {'d3d11': d3d11.allowed()}
 if features['d3d11']
     sources += files('video/out/d3d11/context.c',
                      'video/out/d3d11/ra_d3d11.c',
-                     'video/out/d3d11/libmpv_swapchain.c'
+                     'video/out/d3d11/libmpv_swapchain.c',
                      'video/out/d3d11/libmpv_helper.c')
 endif
 
