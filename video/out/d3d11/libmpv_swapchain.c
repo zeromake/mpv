@@ -37,8 +37,8 @@ static int init(struct render_backend *ctx, mpv_render_param *params)
     {
         return MPV_ERROR_INVALID_PARAMETER;
     }
-    if (init_params.w > 0) p->w = init_params.w;
-    if (init_params.h > 0) p->h = init_params.h;
+    if (init_params->w > 0) p->w = init_params->w;
+    if (init_params->h > 0) p->h = init_params->h;
     p->swapchain_out = init_params->swapchain_out;
     return 0;
 }
@@ -47,8 +47,6 @@ static bool check_format(struct render_backend *ctx, int imgfmt)
 {
     return true;
 }
-
-#define OPTION_PARAMS(priv,params, prop) if (##params->##prop) ##priv->##prop = *(##params->##prop)
 
 static int set_parameter(struct render_backend *ctx, mpv_render_param param)
 {
@@ -65,13 +63,17 @@ static int set_parameter(struct render_backend *ctx, mpv_render_param param)
     {
         return MPV_ERROR_INVALID_PARAMETER;
     }
-    OPTION_PARAMS(p, update_params, w);
-    OPTION_PARAMS(p, update_params, h);
-    OPTION_PARAMS(p, update_params, swapchain_out);
+    if (update_params->w) {
+        p->w = *update_params->w;
+    }
+    if (update_params->h) {
+        p->h = *update_params->h;
+    }
+    if (update_params->swapchain_out) {
+        p->swapchain_out = *update_params->swapchain_out;
+    }
     return 0;
 }
-
-#undef OPTION_PARAMS
 
 static void reconfig(struct render_backend *ctx, struct mp_image_params *params)
 {

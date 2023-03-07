@@ -1129,7 +1129,7 @@ if features['egl-angle-lib']
 endif
 
 egl_angle_win32 = get_option('egl-angle-win32').require(
-    features['egl-angle'] and features['win32-desktop'],
+    features['egl-angle'] and (features['win32-desktop'] or features['uwp']),
     error_message: 'either this is not a win32 desktop or egl-angle was not found!',
 )
 features += {'egl-angle-win32': egl_angle_win32.allowed()}
