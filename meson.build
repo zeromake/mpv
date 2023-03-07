@@ -461,8 +461,9 @@ features += {'uwp': uwp.found()}
 if features['uwp']
     dependencies += uwp
     sources += files('osdep/path-uwp.c')
+    d3d11lib = cc.find_library('d3d11', required: uwp_opt)
+    dependencies += d3d11lib
     flags += ['-D__WINRT__=1']
-    link_flags += ' -ld3d11 '
 endif
 
 features += {'win32-executable': win32 and get_option('cplayer')}
@@ -472,8 +473,8 @@ if win32
                      'osdep/windows_utils.c')
 endif
 
-features += {'win32-desktop': win32 and not uwp.found()}
-if features['win32-desktop'] or features['uwp']
+features += {'win32-desktop': win32}
+if features['win32-desktop']
     win32_desktop_libs = [cc.find_library('avrt'),
                           cc.find_library('dwmapi'),
                           cc.find_library('gdi32'),
@@ -874,7 +875,7 @@ if features['caca']
 endif
 
 direct3d_opt = get_option('direct3d').require(
-    get_option('gpl') and (features['win32-desktop'] or features['uwp']),
+    get_option('gpl') and features['win32-desktop'],
     error_message: 'the build is not GPL or this is not a win32 desktop!',
 )
 direct3d = cc.has_header('d3d9.h', required: direct3d_opt)
@@ -964,7 +965,7 @@ if features['spirv-cross']
 endif
 
 d3d11 = get_option('d3d11').require(
-    (features['win32-desktop'] or features['uwp']) and features['shaderc'] and features['spirv-cross'],
+    features['win32-desktop'] and features['shaderc'] and features['spirv-cross'],
     error_message: 'Either is not a win32 desktop or shaderc nor spirv-cross were found!',
 )
 features += {'d3d11': d3d11.allowed()}
@@ -1131,7 +1132,7 @@ if features['egl-angle-lib']
 endif
 
 egl_angle_win32 = get_option('egl-angle-win32').require(
-    features['egl-angle'] and (features['win32-desktop'] or features['uwp']),
+    features['egl-angle'] and features['win32-desktop'],
     error_message: 'either this is not a win32 desktop or egl-angle was not found!',
 )
 features += {'egl-angle-win32': egl_angle_win32.allowed()}
