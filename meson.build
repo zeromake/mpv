@@ -307,8 +307,9 @@ if host_machine.system() == 'cygwin'
     flags += [mswin_flags, '-mwin32']
 endif
 
-if get_option("uwp")
+if get_option('uwp')
     flags += ['-D__WINRT__=1']
+    link_flags += ' -ld3d11 '
 endif
 
 noexecstack = false
