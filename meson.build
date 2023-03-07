@@ -307,6 +307,10 @@ if host_machine.system() == 'cygwin'
     flags += [mswin_flags, '-mwin32']
 endif
 
+if get_option("uwp")
+    flags += ['-D__WINRT__=1']
+endif
+
 noexecstack = false
 if cc.has_link_argument('-Wl,-z,noexecstack')
     link_flags += '-Wl,-z,noexecstack'
@@ -471,7 +475,7 @@ if win32
 endif
 
 features += {'win32-desktop': win32 and not uwp.found()}
-if features['win32-desktop']
+if features['win32-desktop'] or features['uwp']
     win32_desktop_libs = [cc.find_library('avrt'),
                           cc.find_library('dwmapi'),
                           cc.find_library('gdi32'),
