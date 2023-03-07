@@ -872,7 +872,7 @@ if features['caca']
 endif
 
 direct3d_opt = get_option('direct3d').require(
-    get_option('gpl') and features['win32-desktop'],
+    get_option('gpl') and (features['win32-desktop'] or features['uwp']),
     error_message: 'the build is not GPL or this is not a win32 desktop!',
 )
 direct3d = cc.has_header('d3d9.h', required: direct3d_opt)
@@ -962,7 +962,7 @@ if features['spirv-cross']
 endif
 
 d3d11 = get_option('d3d11').require(
-    features['win32-desktop'] and features['shaderc'] and features['spirv-cross'],
+    (features['win32-desktop'] or features['uwp']) and features['shaderc'] and features['spirv-cross'],
     error_message: 'Either is not a win32 desktop or shaderc nor spirv-cross were found!',
 )
 features += {'d3d11': d3d11.allowed()}
